@@ -18,3 +18,23 @@
 }
 html,body,#root { height: 100%; margin:0; font-family: sans-serif; }
 canvas { display: block; }
+
+/* تخصيص Search Box بتاع leaflet-geosearch */
+.leaflet-control-geosearch form input {
+  color: black !important;         
+  background: white !important;   
+  border: 1px solid #4ade80 !important; 
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.leaflet-control-geosearch form input::placeholder {
+  color: #555 !important;  
+}
+
+.leaflet-control-geosearch button {
+  background: #4ade80 !important; 
+  border-radius: 6px !important;
+  color: white !important;
+}

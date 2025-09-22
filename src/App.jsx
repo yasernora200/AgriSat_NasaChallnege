@@ -4,7 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import SignUp from "./pages/SignUp";
 import Dashboard from './pages/Dashboard';
-import WhatIf from './pages/WhatIf';
+import WhatIf from './pages/WhatIfChat';
 
 
 export default function App(){
