@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer{
+    .element-center{
+        @apply flex  justify-center items-center;
+    }
+    .container{
+        @apply px-[30px] mx-auto;
+    }
+    .btn{
+        @apply bg-[#42b0d1] hover:bg-[#8cdae4] transition-all duration-200;
+    }
+
+
+
+}
+html,body,#root { height: 100%; margin:0; font-family: sans-serif; }
+canvas { display: block; }
