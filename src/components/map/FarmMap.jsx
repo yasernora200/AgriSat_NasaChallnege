@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -15,11 +15,18 @@ import "leaflet-geosearch/dist/geosearch.css";
 
 export default function FarmMap({ selectedGeom, setSelectedGeom }) {
   const fg = useRef(null);
+  const [coords, setCoords] = useState(null); // 🆕 هنا نخزن الإحداثيات
 
   function _onCreated(e) {
     const layer = e.layer;
     const geojson = layer.toGeoJSON();
     setSelectedGeom(geojson);
+
+    // 🆕 لو رسم polygon أو rectangle هنسجل أول نقطة (ممكن تعرضي كل النقاط لو عايزة)
+    if (geojson.geometry.type === "Polygon") {
+      const [lon, lat] = geojson.geometry.coordinates[0][0];
+      setCoords({ lat, lon });
+    }
   }
 
   // === تحميل ملف GeoJSON ===
@@ -30,8 +37,14 @@ export default function FarmMap({ selectedGeom, setSelectedGeom }) {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const data = JSON.parse(event.target.result); // محتوى الملف
-        setSelectedGeom(data); // تعيين المنطقة من الملف
+        const data = JSON.parse(event.target.result);
+        setSelectedGeom(data);
+
+        // 🆕 ناخد أول نقطة من الملف
+        if (data.geometry?.coordinates) {
+          const [lon, lat] = data.geometry.coordinates[0][0];
+          setCoords({ lat, lon });
+        }
       } catch (err) {
         alert("❌ الملف غير صالح. تأكد أنه بصيغة GeoJSON/JSON.");
       }
@@ -54,7 +67,7 @@ export default function FarmMap({ selectedGeom, setSelectedGeom }) {
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
           {/* Search Box */}
-          <SearchBox />
+          <SearchBox setCoords={setCoords} />
 
           <FeatureGroup ref={fg}>
             <EditControl
@@ -84,12 +97,20 @@ export default function FarmMap({ selectedGeom, setSelectedGeom }) {
                      hover:file:bg-green-500"
         />
       </div>
+
+      {/* 🆕 عرض الإحداثيات */}
+      {coords && (
+        <div className="mt-4 p-2 bg-black/50 rounded-lg text-green-300 text-sm">
+          📍 Selected Coordinates: Lat {coords.lat.toFixed(4)}, Lon{" "}
+          {coords.lon.toFixed(4)}
+        </div>
+      )}
     </div>
   );
 }
 
 // ============ Component for Search =============
-function SearchBox() {
+function SearchBox({ setCoords }) {
   const map = useMap();
 
   useEffect(() => {
@@ -110,8 +131,18 @@ function SearchBox() {
 
     map.addControl(searchControl);
 
-    return () => map.removeControl(searchControl);
-  }, [map]);
+    // 🆕 نسمع للـ events بتاعت البحث
+    map.on("geosearch/showlocation", (e) => {
+      const { x: lon, y: lat, label } = e.location; // ناخد الإحداثيات
+      setCoords({ lat, lon });
+      console.log("📍 Location found:", lat, lon, label); // Debug
+    });
+
+    return () => {
+      map.removeControl(searchControl);
+      map.off("geosearch/showlocation");
+    };
+  }, [map, setCoords]);
 
   return null;
 }
