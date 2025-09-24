@@ -18,7 +18,7 @@ export default function Dashboard() {
   });
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-b from-black via-green-950 to-black text-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-black via-green-950 to-black text-white">
       <Header />
       <div className="flex flex-1">
         {/* ===== Left Sidebar ===== */}
