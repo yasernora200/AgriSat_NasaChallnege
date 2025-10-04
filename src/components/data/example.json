@@ -1,0 +1,63 @@
+{
+  "location": {
+    "lat": 30.0444,
+    "lon": 31.2357,
+    "name": "Cairo, Egypt"
+  },
+  "ndvi": {
+    "source": "MODIS MOD13Q1",
+    "description": "Vegetation health index (16-day intervals)",
+    "data": [
+      {
+        "date": "2024-01-01",
+        "value": 0.45,
+        "quality": "good"
+      },
+      {
+        "date": "2024-01-17",
+        "value": 0.52,
+        "quality": "good"
+      }
+    ]
+  },
+  "soil_moisture": {
+    "source": "SMAP SPL4SMGP",
+    "description": "Soil moisture 0-5cm depth (daily)",
+    "unit": "cm³/cm³",
+    "data": [
+      {
+        "date": "2024-01-01",
+        "value": 0.15,
+        "depth": "0-5cm"
+      }
+    ]
+  },
+  "weather_historical": {
+    "source": "NASA POWER",
+    "description": "Historical weather data (last 2 months)",
+    "data": [
+      {
+        "date": "2024-01-01",
+        "temperature": 18.5,
+        "precipitation": 2.1,
+        "solar_radiation": 250.3
+      }
+    ]
+  },
+  "weather_forecast": {
+    "source": "OpenWeatherMap",
+    "description": "7-day weather forecast",
+    "data": [
+      {
+        "date": "2024-01-15",
+        "temperature": {
+          "min": 15,
+          "max": 25
+        },
+        "precipitation": 0,
+        "condition": "clear sky",
+        "humidity": 65
+      }
+    ]
+  }
+}
